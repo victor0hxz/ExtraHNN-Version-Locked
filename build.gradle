@@ -122,3 +122,8 @@ sourceSets.test.compileClasspath += sourceSets.main.compileClasspath + sourceSet
 neoForge.addModdingDependenciesTo(sourceSets.test)
 // Functional fixtures run inside Minecraft with -PportSmoke, not through JUnit.
 tasks.withType(Test).configureEach { failOnNoDiscoveredTests = false }
+
+if (providers.gradleProperty('refillSmoke').isPresent()) {
+    neoForge.mods.extrahnn.sourceSet(sourceSets.test)
+    neoForge.runs.server.systemProperty 'port.refillSmoke', 'true'
+}

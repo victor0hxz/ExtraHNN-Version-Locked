@@ -12,8 +12,8 @@ public class InternalItemHandler extends ItemStackHandler implements ResourceHan
  public ItemStack extractItemInternal(int slot,int amount,boolean simulate) { return super.extractItem(slot,amount,simulate); }
  private final SnapshotJournal<NonNullList<ItemStack>> journal=new SnapshotJournal<>() {
   protected NonNullList<ItemStack> createSnapshot() { var copy=NonNullList.withSize(stacks.size(),ItemStack.EMPTY);for(int i=0;i<stacks.size();i++)copy.set(i,stacks.get(i).copy());return copy; }
-  protected void revertToSnapshot(NonNullList<ItemStack> snapshot) { for(int i=0;i<snapshot.size();i++)stacks.set(i,snapshot.get(i)); }
-  protected void onRootCommit(NonNullList<ItemStack> snapshot) { for(int i=0;i<stacks.size();i++)onContentsChanged(i); }
+  protected void revertToSnapshot(NonNullList<ItemStack> snapshot) { for(int i=0;i<snapshot.size();i++)if (!ItemStack.matches(stacks.get(i), snapshot.get(i))) stacks.set(i,snapshot.get(i)); }
+  protected void onRootCommit(NonNullList<ItemStack> snapshot) { for(int i=0;i<stacks.size();i++)if (!ItemStack.matches(stacks.get(i), snapshot.get(i))) onContentsChanged(i); }
  };
  public int size(){return getSlots();}
  public ItemResource getResource(int slot){return ItemResource.of(getStackInSlot(slot));}

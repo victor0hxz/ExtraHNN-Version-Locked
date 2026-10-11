@@ -198,8 +198,10 @@ public class UltimateSimChamberTileEntity extends BlockEntity implements Ticking
         }
 
         ExtraDataModelInstance oldModel = this.currentModel;
+        // Equivalent stack copies from inventory transactions must preserve the paid cycle.
+        boolean modelChanged = !ItemStack.isSameItemSameComponents(oldModel.getSourceStack(), model);
         this.currentModel = this.getOrLoadModel(model);
-        if (oldModel != this.currentModel) this.runtime = 0;
+        if (modelChanged) this.runtime = 0;
         if (!this.currentModel.isValid()) return;
 
         if (!this.currentModel.getTier().data().canSim()) {

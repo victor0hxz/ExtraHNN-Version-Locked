@@ -51,5 +51,6 @@ public class PortFunctionalSmoke {
    BlockPos trainPos=new BlockPos(24,100,0);level.setBlockAndUpdate(trainPos,ExtraHostile.Blocks.SIMULATOR_MODELING.value().defaultBlockState());var trainer=(SimulationModelingTileEntity)level.getBlockEntity(trainPos);var training=combined.copy();ExtraDataModelItem.setData(training,0);trainer.getInventory().setStackInSlot(0,training);trainer.getEnergy().setEnergy(ExtraHostileConfig.simulationModelingPowerCap);for(int i=0;i<ExtraHostileConfig.simulationModelingPowerDuration+3;i++)trainer.serverTick(level,trainPos,trainer.getBlockState());require(ExtraDataModelItem.getData(training)>0,"model training advances data");
    ExtraHostileNetworks.LOGGER.info("PORT FUNCTIONAL SMOKE COMPLETE");
   }catch(Throwable error){ExtraHostileNetworks.LOGGER.error("PORT FUNCTIONAL SMOKE FAILED",error);}
+  finally {event.getServer().halt(false);}
  }
 }
